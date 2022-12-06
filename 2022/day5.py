@@ -1,5 +1,7 @@
 from pathlib import Path
 from collections import defaultdict
+import re
+from copy import deepcopy
 
 def day5():
     input = open(Path(__file__).with_name('day5input'))
@@ -11,11 +13,9 @@ def day5():
     crates.pop(0)
     stacks = []
     for crateLine in crates:
-        crateLine += ''
         crateList = [list(crateLine)[x:x+3] for x in range(0, len(crateLine), 4)]
         stacks.append(dict(enumerate(crateList)))
     stackProcessor = defaultdict(list)
-    stackProcessorStar2 = defaultdict(list)
     for stackIndex in range(len(stacks)):
         d = stacks[stackIndex]
         for k, v in d.items():
@@ -23,25 +23,22 @@ def day5():
             v = v[1]
             if v != ' ':
                 stackProcessor[k].append(v)
-                stackProcessorStar2[k].append(v)
+    stackProcessorStar2 = deepcopy(stackProcessor)
             
     instructions = instructions.split('\n')
     for instruction in instructions:
-        inst = instruction.replace("move ", '').replace("from ", '').replace('to ', '').split(' ')
+        inst = re.findall(r'\b\d+\b', instruction)
         qty = int(inst[0])
         fromStack = int(inst[1])
         toStack = int(inst[2])
-        # print('Now moving to stack ' + str(toStack) + ' from stack ' + str(fromStack) + '. Quantity: ' + str(qty))
         
         # Star 1
         stack = stackProcessor[fromStack]
         targetStack = stackProcessor[toStack]
-        move = stack[len(stack) - qty:]
-        move.reverse()
-        for item in move:
-            targetStack.append(item)
-        stackProcessor[toStack] = targetStack
-        del stackProcessor[fromStack][len(stack) - qty:]
+        for _ in range(qty):
+            val = stackProcessor[fromStack].pop()
+            stackProcessor[toStack].append(val)
+
         # Star 2
         stack = stackProcessorStar2[fromStack]
         targetStack = stackProcessorStar2[toStack]
@@ -53,14 +50,12 @@ def day5():
 
     star1 = ''
     for stack in stackProcessor:
-        top = stackProcessor[stack][len(stackProcessor[stack]) - 1 :]
-        star1 += top[0]
+        star1 += stackProcessor[stack][-1]
     print('Star 1: ' + star1)
 
     star2 = ''
     for stack in stackProcessorStar2:
-        top = stackProcessorStar2[stack][len(stackProcessorStar2[stack]) - 1 :]
-        star2 += top[0]
+        star2 += stackProcessorStar2[stack][-1]
     print('Star 2: ' + star2)
 
 if __name__ == "__main__":
