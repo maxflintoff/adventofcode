@@ -1,5 +1,3 @@
-import sys
-sys.path.append('../.')
 from utils import getInput
 
 def findFirstUnique(datastream: str, marker: int):
