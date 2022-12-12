@@ -1,16 +1,18 @@
 from utils import getInput
 
+
 def day10():
-    instructions = getInput('day10').split('\n')
+    instructions = getInput("day10").split("\n")
 
     registerX = 1
     cycles = 0
     displayCycle = 0
     signals = []
-    display = ''
+    display = ""
     spritePos = [0, 1, 2]
+    value = 0
     for instruction in instructions:
-        if instruction == 'noop':
+        if instruction == "noop":
             cycle = 1
         else:
             cycle = 2
@@ -24,20 +26,21 @@ def day10():
 
             # Star 2
             if displayCycle in spritePos:
-                display += '#'
+                display += "#"
             else:
-                display += '.'        
+                display += "."
 
             displayCycle += 1
 
             if cycles % 40 == 0:
-                display += '\n'
-                displayCycle = 0  
-            spritePos = [registerX -1, registerX, registerX + 1]
+                display += "\n"
+                displayCycle = 0
+            spritePos = [registerX - 1, registerX, registerX + 1]
 
-    print('Star 1:', sum(signals))
-    print('Star2:')
+    print("Star 1:", sum(signals))
+    print("Star2:")
     print(display)
+
 
 if __name__ == "__main__":
     day10()

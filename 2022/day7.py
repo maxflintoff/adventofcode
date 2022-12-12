@@ -51,6 +51,7 @@ def day7():
 
     # Star 2
     UnusedSize = 70000000 - root.size
+    star2 = 0
     for size in sorted(allSizes):
         if size + UnusedSize >= 30000000:
             star2 = size

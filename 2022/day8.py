@@ -1,8 +1,9 @@
 from utils import getInput
 
+
 def day8():
 
-    input = getInput('day8')
+    input = getInput("day8")
     lines = input.split()
     visibleTotal = 0
     scenicScores = []
@@ -21,7 +22,9 @@ def day8():
                     visibleLeft = visibleRight = True
                     viewLeft = viewRight = 0
 
-                    def calculate_properties(check: int, test: int, tree: int, distance: int):
+                    def calculate_properties(
+                        check: int, test: int, tree: int, distance: int
+                    ):
                         visible = True
                         view = 0
                         if test == 0:
@@ -42,11 +45,15 @@ def day8():
                                 if check == 0 and view == 0:
                                     view = check - distance
                                 check += 1
-                            
+
                         return visible, view
 
-                    visibleAbove, viewAbove = calculate_properties(row - 1, 0, tree, row)
-                    visibleBelow, viewBelow = calculate_properties(row + 1, len(lines) - 1, tree, row)
+                    visibleAbove, viewAbove = calculate_properties(
+                        row - 1, 0, tree, row
+                    )
+                    visibleBelow, viewBelow = calculate_properties(
+                        row + 1, len(lines) - 1, tree, row
+                    )
 
                     while left >= 0:
                         if line[left] >= line[tree]:
@@ -69,8 +76,9 @@ def day8():
 
                     scenicScores.append(viewAbove * viewLeft * viewRight * viewBelow)
 
-    print('Star 1:', visibleTotal)
-    print('Star 2:', max(scenicScores))
+    print("Star 1:", visibleTotal)
+    print("Star 2:", max(scenicScores))
+
 
 if __name__ == "__main__":
     day8()
